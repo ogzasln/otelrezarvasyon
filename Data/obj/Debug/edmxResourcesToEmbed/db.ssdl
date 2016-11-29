@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="dbModelStoreContainer">
+    <EntitySet Name="UserSet" EntityType="dbModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserTypeSet" EntityType="dbModel.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_UserUserType" Association="dbModel.Store.FK_UserUserType">
+      <End Role="UserTypeSet" EntitySet="UserTypeSet" />
+      <End Role="UserSet" EntitySet="UserSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserTypeId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Mail" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTypeSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_UserUserType">
+    <End Role="UserTypeSet" Type="dbModel.Store.UserTypeSet" Multiplicity="1" />
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTypeSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserSet">
+        <PropertyRef Name="UserTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

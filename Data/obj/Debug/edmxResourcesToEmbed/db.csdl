@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="UserSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserTypeId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Mail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="UserTypeSet" Relationship="Self.FK_UserUserType" FromRole="UserSet" ToRole="UserTypeSet" />
+  </EntityType>
+  <EntityType Name="UserTypeSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="UserSet" Relationship="Self.FK_UserUserType" FromRole="UserTypeSet" ToRole="UserSet" />
+  </EntityType>
+  <Association Name="FK_UserUserType">
+    <End Role="UserTypeSet" Type="Self.UserTypeSet" Multiplicity="1" />
+    <End Role="UserSet" Type="Self.UserSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserTypeSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserSet">
+        <PropertyRef Name="UserTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="UserSet" EntityType="Self.UserSet" />
+    <EntitySet Name="UserTypeSet" EntityType="Self.UserTypeSet" />
+    <AssociationSet Name="FK_UserUserType" Association="Self.FK_UserUserType">
+      <End Role="UserTypeSet" EntitySet="UserTypeSet" />
+      <End Role="UserSet" EntitySet="UserSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
