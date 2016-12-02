@@ -27,5 +27,7 @@ namespace Data
     
         public virtual DbSet<UserSet> UserSet { get; set; }
         public virtual DbSet<UserTypeSet> UserTypeSet { get; set; }
+        public virtual DbSet<Category> CategorySet { get; set; }
+        public virtual DbSet<Post> PostSet { get; set; }
     }
 }

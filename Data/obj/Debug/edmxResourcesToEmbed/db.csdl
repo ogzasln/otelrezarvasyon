@@ -10,6 +10,7 @@
     <Property Name="Mail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="UserTypeSet" Relationship="Self.FK_UserUserType" FromRole="UserSet" ToRole="UserTypeSet" />
+    <NavigationProperty Name="Post" Relationship="dbModel.UserSetPost" FromRole="UserSet" ToRole="Post" />
   </EntityType>
   <EntityType Name="UserTypeSet">
     <Key>
@@ -38,5 +39,61 @@
       <End Role="UserTypeSet" EntitySet="UserTypeSet" />
       <End Role="UserSet" EntitySet="UserSet" />
     </AssociationSet>
+    <EntitySet Name="CategorySet" EntityType="dbModel.Category" />
+    <EntitySet Name="PostSet" EntityType="dbModel.Post" />
+    <AssociationSet Name="PostCategory" Association="dbModel.PostCategory">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Category" EntitySet="CategorySet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetPost" Association="dbModel.UserSetPost">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Post" EntitySet="PostSet" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="baslik" Type="String" Nullable="false" />
+    <Property Name="isim" Type="String" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="dbModel.PostCategory" FromRole="Category" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="baslik" Type="String" Nullable="false" />
+    <Property Name="tarih" Type="String" Nullable="false" />
+    <Property Name="icerik" Type="String" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="dbModel.PostCategory" FromRole="Post" ToRole="Category" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetPost" FromRole="Post" ToRole="UserSet" />
+    <Property Name="UserSetId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="PostCategory">
+    <End Type="dbModel.Post" Role="Post" Multiplicity="*" />
+    <End Type="dbModel.Category" Role="Category" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetPost">
+    <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+    <End Type="dbModel.Post" Role="Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

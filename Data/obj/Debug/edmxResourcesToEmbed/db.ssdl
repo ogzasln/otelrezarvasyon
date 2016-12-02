@@ -3,9 +3,19 @@
   <EntityContainer Name="dbModelStoreContainer">
     <EntitySet Name="UserSet" EntityType="dbModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserTypeSet" EntityType="dbModel.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CategorySet" EntityType="dbModel.Store.CategorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PostSet" EntityType="dbModel.Store.PostSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserUserType" Association="dbModel.Store.FK_UserUserType">
       <End Role="UserTypeSet" EntitySet="UserTypeSet" />
       <End Role="UserSet" EntitySet="UserSet" />
+    </AssociationSet>
+    <AssociationSet Name="PostCategory" Association="dbModel.Store.PostCategory">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Category" EntitySet="CategorySet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetPost" Association="dbModel.Store.UserSetPost">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Post" EntitySet="PostSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -25,6 +35,25 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="CategorySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isim" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PostSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="tarih" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="icerik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="FK_UserUserType">
     <End Role="UserTypeSet" Type="dbModel.Store.UserTypeSet" Multiplicity="1" />
     <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="*" />
@@ -34,6 +63,30 @@
       </Principal>
       <Dependent Role="UserSet">
         <PropertyRef Name="UserTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PostCategory">
+    <End Role="Post" Type="dbModel.Store.PostSet" Multiplicity="*" />
+    <End Role="Category" Type="dbModel.Store.CategorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetPost">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Post" Type="dbModel.Store.PostSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="UserSetId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

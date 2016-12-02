@@ -3,5 +3,37 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+           <div class="panel panel-danger text-center">
+               <div class="panel-heading">
+                   Etkinlikler
+               </div>
+               <div class="row" style="margin-top: 10px;">
+                   <div class="col-md-4">
+                       <a href="@Url.Action("Index","UserSets")" class="btn btn-danger btn-block"> Kullanıcılar</a>
+                   </div>
+                   <div class="col-md-4">
+                       <a href="#" class="btn btn-danger btn-block"> Vip Kullanıcılar</a>
+                   </div>
+                   <div class="col-md-4">
+                       <a href="#" class="btn btn-danger btn-block"> Ödemeler</a>
+                   </div>
+               </div>
+               <div class="row" style="margin-top: 10px;">
+                   <div class="col-md-4">
+                       <a href="#" class="btn btn-danger btn-block"> İlanlar</a>
+                   </div>
+                   <div class="col-md-4">
+                       <a href="#" class="btn btn-danger btn-block"> Otel Değerlendirme</a>
+                   </div>
+                   <div class="col-md-4">
+                       <a href="#" class="btn btn-danger btn-block"> Kategori</a>
+                   </div>
+               </div>
+           </div>
+        </div>
+    </div>
+</div>
 
