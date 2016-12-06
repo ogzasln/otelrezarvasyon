@@ -11,6 +11,8 @@
     <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="UserTypeSet" Relationship="Self.FK_UserUserType" FromRole="UserSet" ToRole="UserTypeSet" />
     <NavigationProperty Name="Post" Relationship="dbModel.UserSetPost" FromRole="UserSet" ToRole="Post" />
+    <NavigationProperty Name="Payment" Relationship="dbModel.UserSetPayment" FromRole="UserSet" ToRole="Payment" />
+    <NavigationProperty Name="Evaluation" Relationship="dbModel.UserSetEvaluation" FromRole="UserSet" ToRole="Evaluation" />
   </EntityType>
   <EntityType Name="UserTypeSet">
     <Key>
@@ -48,6 +50,25 @@
     <AssociationSet Name="UserSetPost" Association="dbModel.UserSetPost">
       <End Role="UserSet" EntitySet="UserSet" />
       <End Role="Post" EntitySet="PostSet" />
+    </AssociationSet>
+    <EntitySet Name="PaymentSet" EntityType="dbModel.Payment" />
+    <EntitySet Name="AdsSet" EntityType="dbModel.Ads" />
+    <EntitySet Name="EvaluationSet" EntityType="dbModel.Evaluation" />
+    <AssociationSet Name="UserSetPayment" Association="dbModel.UserSetPayment">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsPayment" Association="dbModel.AdsPayment">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetEvaluation" Association="dbModel.UserSetEvaluation">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Evaluation" EntitySet="EvaluationSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsEvaluation" Association="dbModel.AdsEvaluation">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Evaluation" EntitySet="EvaluationSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Category">
@@ -93,6 +114,92 @@
       </Principal>
       <Dependent Role="Post">
         <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserSetId" Type="Int32" Nullable="false" />
+    <Property Name="AdsId" Type="Int32" Nullable="false" />
+    <Property Name="Pay" Type="String" Nullable="false" />
+    <Property Name="Method" Type="String" Nullable="false" />
+    <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetPayment" FromRole="Payment" ToRole="UserSet" />
+    <NavigationProperty Name="Ads" Relationship="dbModel.AdsPayment" FromRole="Payment" ToRole="Ads" />
+  </EntityType>
+  <EntityType Name="Ads">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Title" Type="String" Nullable="false" />
+    <Property Name="Text" Type="String" Nullable="false" />
+    <Property Name="Pay" Type="String" Nullable="false" />
+    <Property Name="Contact" Type="String" Nullable="false" />
+    <Property Name="Adress" Type="String" Nullable="false" />
+    <NavigationProperty Name="Payment" Relationship="dbModel.AdsPayment" FromRole="Ads" ToRole="Payment" />
+    <NavigationProperty Name="Evaluation" Relationship="dbModel.AdsEvaluation" FromRole="Ads" ToRole="Evaluation" />
+  </EntityType>
+  <EntityType Name="Evaluation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserSetId" Type="Int32" Nullable="false" />
+    <Property Name="AdsId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Title" Type="String" Nullable="false" />
+    <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetEvaluation" FromRole="Evaluation" ToRole="UserSet" />
+    <NavigationProperty Name="Ads" Relationship="dbModel.AdsEvaluation" FromRole="Evaluation" ToRole="Ads" />
+  </EntityType>
+  <Association Name="UserSetPayment">
+    <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+    <End Type="dbModel.Payment" Role="Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsPayment">
+    <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+    <End Type="dbModel.Payment" Role="Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetEvaluation">
+    <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+    <End Type="dbModel.Evaluation" Role="Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsEvaluation">
+    <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+    <End Type="dbModel.Evaluation" Role="Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="AdsId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

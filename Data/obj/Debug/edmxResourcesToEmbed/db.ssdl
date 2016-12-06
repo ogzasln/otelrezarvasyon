@@ -5,6 +5,9 @@
     <EntitySet Name="UserTypeSet" EntityType="dbModel.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CategorySet" EntityType="dbModel.Store.CategorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PostSet" EntityType="dbModel.Store.PostSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PaymentSet" EntityType="dbModel.Store.PaymentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AdsSet" EntityType="dbModel.Store.AdsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EvaluationSet" EntityType="dbModel.Store.EvaluationSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserUserType" Association="dbModel.Store.FK_UserUserType">
       <End Role="UserTypeSet" EntitySet="UserTypeSet" />
       <End Role="UserSet" EntitySet="UserSet" />
@@ -16,6 +19,22 @@
     <AssociationSet Name="UserSetPost" Association="dbModel.Store.UserSetPost">
       <End Role="UserSet" EntitySet="UserSet" />
       <End Role="Post" EntitySet="PostSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetPayment" Association="dbModel.Store.UserSetPayment">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsPayment" Association="dbModel.Store.AdsPayment">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetEvaluation" Association="dbModel.Store.UserSetEvaluation">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Evaluation" EntitySet="EvaluationSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsEvaluation" Association="dbModel.Store.AdsEvaluation">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Evaluation" EntitySet="EvaluationSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -54,6 +73,38 @@
     <Property Name="CategoryId" Type="int" Nullable="false" />
     <Property Name="UserSetId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="PaymentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
+    <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Method" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Adress" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EvaluationSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
   <Association Name="FK_UserUserType">
     <End Role="UserTypeSet" Type="dbModel.Store.UserTypeSet" Multiplicity="1" />
     <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="*" />
@@ -87,6 +138,54 @@
       </Principal>
       <Dependent Role="Post">
         <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetPayment">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsPayment">
+    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetEvaluation">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Evaluation" Type="dbModel.Store.EvaluationSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsEvaluation">
+    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="Evaluation" Type="dbModel.Store.EvaluationSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="AdsId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

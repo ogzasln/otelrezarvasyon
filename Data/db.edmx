@@ -10,6 +10,9 @@
     <EntitySet Name="UserTypeSet" EntityType="dbModel.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CategorySet" EntityType="dbModel.Store.CategorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PostSet" EntityType="dbModel.Store.PostSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PaymentSet" EntityType="dbModel.Store.PaymentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AdsSet" EntityType="dbModel.Store.AdsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EvaluationSet" EntityType="dbModel.Store.EvaluationSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserUserType" Association="dbModel.Store.FK_UserUserType">
       <End Role="UserTypeSet" EntitySet="UserTypeSet" />
       <End Role="UserSet" EntitySet="UserSet" />
@@ -21,6 +24,22 @@
     <AssociationSet Name="UserSetPost" Association="dbModel.Store.UserSetPost">
       <End Role="UserSet" EntitySet="UserSet" />
       <End Role="Post" EntitySet="PostSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetPayment" Association="dbModel.Store.UserSetPayment">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsPayment" Association="dbModel.Store.AdsPayment">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetEvaluation" Association="dbModel.Store.UserSetEvaluation">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Evaluation" EntitySet="EvaluationSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsEvaluation" Association="dbModel.Store.AdsEvaluation">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Evaluation" EntitySet="EvaluationSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -59,6 +78,38 @@
     <Property Name="CategoryId" Type="int" Nullable="false" />
     <Property Name="UserSetId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="PaymentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
+    <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Method" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Adress" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EvaluationSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
   <Association Name="FK_UserUserType">
     <End Role="UserTypeSet" Type="dbModel.Store.UserTypeSet" Multiplicity="1" />
     <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="*" />
@@ -95,6 +146,54 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="UserSetPayment">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsPayment">
+    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetEvaluation">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Evaluation" Type="dbModel.Store.EvaluationSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsEvaluation">
+    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="Evaluation" Type="dbModel.Store.EvaluationSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluation">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -110,6 +209,8 @@
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="UserTypeSet" Relationship="Self.FK_UserUserType" FromRole="UserSet" ToRole="UserTypeSet" />
           <NavigationProperty Name="Post" Relationship="dbModel.UserSetPost" FromRole="UserSet" ToRole="Post" />
+          <NavigationProperty Name="Payment" Relationship="dbModel.UserSetPayment" FromRole="UserSet" ToRole="Payment" />
+          <NavigationProperty Name="Evaluation" Relationship="dbModel.UserSetEvaluation" FromRole="UserSet" ToRole="Evaluation" />
         </EntityType>
         <EntityType Name="UserTypeSet">
           <Key>
@@ -147,6 +248,25 @@
           <AssociationSet Name="UserSetPost" Association="dbModel.UserSetPost">
             <End Role="UserSet" EntitySet="UserSet" />
             <End Role="Post" EntitySet="PostSet" />
+          </AssociationSet>
+          <EntitySet Name="PaymentSet" EntityType="dbModel.Payment" />
+          <EntitySet Name="AdsSet" EntityType="dbModel.Ads" />
+          <EntitySet Name="EvaluationSet" EntityType="dbModel.Evaluation" />
+          <AssociationSet Name="UserSetPayment" Association="dbModel.UserSetPayment">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="Payment" EntitySet="PaymentSet" />
+          </AssociationSet>
+          <AssociationSet Name="AdsPayment" Association="dbModel.AdsPayment">
+            <End Role="Ads" EntitySet="AdsSet" />
+            <End Role="Payment" EntitySet="PaymentSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserSetEvaluation" Association="dbModel.UserSetEvaluation">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="Evaluation" EntitySet="EvaluationSet" />
+          </AssociationSet>
+          <AssociationSet Name="AdsEvaluation" Association="dbModel.AdsEvaluation">
+            <End Role="Ads" EntitySet="AdsSet" />
+            <End Role="Evaluation" EntitySet="EvaluationSet" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
@@ -195,6 +315,92 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSetId" Type="Int32" Nullable="false" />
+          <Property Name="AdsId" Type="Int32" Nullable="false" />
+          <Property Name="Pay" Type="String" Nullable="false" />
+          <Property Name="Method" Type="String" Nullable="false" />
+          <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetPayment" FromRole="Payment" ToRole="UserSet" />
+          <NavigationProperty Name="Ads" Relationship="dbModel.AdsPayment" FromRole="Payment" ToRole="Ads" />
+        </EntityType>
+        <EntityType Name="Ads">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Text" Type="String" Nullable="false" />
+          <Property Name="Pay" Type="String" Nullable="false" />
+          <Property Name="Contact" Type="String" Nullable="false" />
+          <Property Name="Adress" Type="String" Nullable="false" />
+          <NavigationProperty Name="Payment" Relationship="dbModel.AdsPayment" FromRole="Ads" ToRole="Payment" />
+          <NavigationProperty Name="Evaluation" Relationship="dbModel.AdsEvaluation" FromRole="Ads" ToRole="Evaluation" />
+        </EntityType>
+        <EntityType Name="Evaluation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserSetId" Type="Int32" Nullable="false" />
+          <Property Name="AdsId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetEvaluation" FromRole="Evaluation" ToRole="UserSet" />
+          <NavigationProperty Name="Ads" Relationship="dbModel.AdsEvaluation" FromRole="Evaluation" ToRole="Ads" />
+        </EntityType>
+        <Association Name="UserSetPayment">
+          <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+          <End Type="dbModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="UserSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdsPayment">
+          <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+          <End Type="dbModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="AdsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserSetEvaluation">
+          <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+          <End Type="dbModel.Evaluation" Role="Evaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Evaluation">
+              <PropertyRef Name="UserSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdsEvaluation">
+          <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+          <End Type="dbModel.Evaluation" Role="Evaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Evaluation">
+              <PropertyRef Name="AdsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -238,6 +444,41 @@
           <ScalarProperty Name="icerik" ColumnName="icerik" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaymentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(dbModel.Payment)">
+        <MappingFragment StoreEntitySet="PaymentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
+          <ScalarProperty Name="AdsId" ColumnName="AdsId" />
+          <ScalarProperty Name="Pay" ColumnName="Pay" />
+          <ScalarProperty Name="Method" ColumnName="Method" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(dbModel.Ads)">
+        <MappingFragment StoreEntitySet="AdsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Pay" ColumnName="Pay" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Adress" ColumnName="Adress" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EvaluationSet">
+      <EntityTypeMapping TypeName="IsTypeOf(dbModel.Evaluation)">
+        <MappingFragment StoreEntitySet="EvaluationSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
+          <ScalarProperty Name="AdsId" ColumnName="AdsId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
