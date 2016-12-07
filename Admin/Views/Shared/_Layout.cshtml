@@ -23,7 +23,7 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li>@Html.ActionLink("Çıkış", "Logout", "Home", null, null)</li>
+                            <li><a href="@Url.Action("Logout","Home")">Çıkış</a></li>
                         </ul>
                     </div>
                 </div>
@@ -41,5 +41,6 @@
         </footer>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("js", false)
 </body>
 </html>
