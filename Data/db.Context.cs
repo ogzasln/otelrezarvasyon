@@ -32,5 +32,6 @@ namespace Data
         public virtual DbSet<Payment> PaymentSet { get; set; }
         public virtual DbSet<Ads> AdsSet { get; set; }
         public virtual DbSet<Evaluation> EvaluationSet { get; set; }
+        public virtual DbSet<AdsAccess> AdsAccessSet { get; set; }
     }
 }

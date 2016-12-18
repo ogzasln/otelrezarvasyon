@@ -13,6 +13,7 @@
     <EntitySet Name="PaymentSet" EntityType="dbModel.Store.PaymentSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="AdsSet" EntityType="dbModel.Store.AdsSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EvaluationSet" EntityType="dbModel.Store.EvaluationSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AdsAccessSet" EntityType="dbModel.Store.AdsAccessSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserUserType" Association="dbModel.Store.FK_UserUserType">
       <End Role="UserTypeSet" EntitySet="UserTypeSet" />
       <End Role="UserSet" EntitySet="UserSet" />
@@ -40,6 +41,18 @@
     <AssociationSet Name="AdsEvaluation" Association="dbModel.Store.AdsEvaluation">
       <End Role="Ads" EntitySet="AdsSet" />
       <End Role="Evaluation" EntitySet="EvaluationSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsAdsAccess" Association="dbModel.Store.AdsAdsAccess">
+      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetAdsAccess" Association="dbModel.Store.UserSetAdsAccess">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="PaymentAdsAccess" Association="dbModel.Store.PaymentAdsAccess">
+      <End Role="Payment" EntitySet="PaymentSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -85,8 +98,9 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserSetId" Type="int" Nullable="false" />
     <Property Name="AdsId" Type="int" Nullable="false" />
-    <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Method" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="AdsAccess_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="AdsSet">
     <Key>
@@ -109,6 +123,14 @@
     <Property Name="AdsId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdsAccessSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_UserUserType">
     <End Role="UserTypeSet" Type="dbModel.Store.UserTypeSet" Multiplicity="1" />
@@ -194,6 +216,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="AdsAdsAccess">
+    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="AdsAccess" Type="dbModel.Store.AdsAccessSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdsAccess">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetAdsAccess">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="AdsAccess" Type="dbModel.Store.AdsAccessSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdsAccess">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PaymentAdsAccess">
+    <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
+    <End Role="AdsAccess" Type="dbModel.Store.AdsAccessSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="AdsAccess">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="AdsAccess_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -211,6 +269,7 @@
           <NavigationProperty Name="Post" Relationship="dbModel.UserSetPost" FromRole="UserSet" ToRole="Post" />
           <NavigationProperty Name="Payment" Relationship="dbModel.UserSetPayment" FromRole="UserSet" ToRole="Payment" />
           <NavigationProperty Name="Evaluation" Relationship="dbModel.UserSetEvaluation" FromRole="UserSet" ToRole="Evaluation" />
+          <NavigationProperty Name="AdsAccess" Relationship="dbModel.UserSetAdsAccess" FromRole="UserSet" ToRole="AdsAccess" />
         </EntityType>
         <EntityType Name="UserTypeSet">
           <Key>
@@ -268,6 +327,19 @@
             <End Role="Ads" EntitySet="AdsSet" />
             <End Role="Evaluation" EntitySet="EvaluationSet" />
           </AssociationSet>
+          <EntitySet Name="AdsAccessSet" EntityType="dbModel.AdsAccess" />
+          <AssociationSet Name="AdsAdsAccess" Association="dbModel.AdsAdsAccess">
+            <End Role="Ads" EntitySet="AdsSet" />
+            <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserSetAdsAccess" Association="dbModel.UserSetAdsAccess">
+            <End Role="UserSet" EntitySet="UserSet" />
+            <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+          </AssociationSet>
+          <AssociationSet Name="PaymentAdsAccess" Association="dbModel.PaymentAdsAccess">
+            <End Role="Payment" EntitySet="PaymentSet" />
+            <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -322,10 +394,11 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserSetId" Type="Int32" Nullable="false" />
           <Property Name="AdsId" Type="Int32" Nullable="false" />
-          <Property Name="Pay" Type="String" Nullable="false" />
-          <Property Name="Method" Type="String" Nullable="false" />
           <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetPayment" FromRole="Payment" ToRole="UserSet" />
           <NavigationProperty Name="Ads" Relationship="dbModel.AdsPayment" FromRole="Payment" ToRole="Ads" />
+          <NavigationProperty Name="AdsAccess" Relationship="dbModel.PaymentAdsAccess" FromRole="Payment" ToRole="AdsAccess" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="Ads">
           <Key>
@@ -340,6 +413,7 @@
           <Property Name="Adress" Type="String" Nullable="false" />
           <NavigationProperty Name="Payment" Relationship="dbModel.AdsPayment" FromRole="Ads" ToRole="Payment" />
           <NavigationProperty Name="Evaluation" Relationship="dbModel.AdsEvaluation" FromRole="Ads" ToRole="Evaluation" />
+          <NavigationProperty Name="AdsAccess" Relationship="dbModel.AdsAdsAccess" FromRole="Ads" ToRole="AdsAccess" />
         </EntityType>
         <EntityType Name="Evaluation">
           <Key>
@@ -401,6 +475,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdsAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Ads" Relationship="dbModel.AdsAdsAccess" FromRole="AdsAccess" ToRole="Ads" />
+          <Property Name="AdsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetAdsAccess" FromRole="AdsAccess" ToRole="UserSet" />
+          <Property Name="UserSetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Payment" Relationship="dbModel.PaymentAdsAccess" FromRole="AdsAccess" ToRole="Payment" />
+        </EntityType>
+        <Association Name="AdsAdsAccess">
+          <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+          <End Type="dbModel.AdsAccess" Role="AdsAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdsAccess">
+              <PropertyRef Name="AdsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserSetAdsAccess">
+          <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+          <End Type="dbModel.AdsAccess" Role="AdsAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserSet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdsAccess">
+              <PropertyRef Name="UserSetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PaymentAdsAccess">
+          <End Type="dbModel.Payment" Role="Payment" Multiplicity="0..1" />
+          <End Type="dbModel.AdsAccess" Role="AdsAccess" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -453,8 +566,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
           <ScalarProperty Name="AdsId" ColumnName="AdsId" />
-          <ScalarProperty Name="Pay" ColumnName="Pay" />
-          <ScalarProperty Name="Method" ColumnName="Method" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -482,6 +595,23 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="AdsAccessSet">
+      <EntityTypeMapping TypeName="IsTypeOf(dbModel.AdsAccess)">
+        <MappingFragment StoreEntitySet="AdsAccessSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AdsId" ColumnName="AdsId" />
+          <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PaymentAdsAccess" TypeName="dbModel.PaymentAdsAccess" StoreEntitySet="PaymentSet">
+      <EndProperty Name="AdsAccess">
+        <ScalarProperty Name="Id" ColumnName="AdsAccess_Id" />
+      </EndProperty>
+      <EndProperty Name="Payment">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

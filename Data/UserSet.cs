@@ -20,6 +20,7 @@ namespace Data
             this.Post = new HashSet<Post>();
             this.Payment = new HashSet<Payment>();
             this.Evaluation = new HashSet<Evaluation>();
+            this.AdsAccess = new HashSet<AdsAccess>();
         }
     
         public int Id { get; set; }
@@ -35,5 +36,7 @@ namespace Data
         public virtual ICollection<Payment> Payment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Evaluation> Evaluation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdsAccess> AdsAccess { get; set; }
     }
 }

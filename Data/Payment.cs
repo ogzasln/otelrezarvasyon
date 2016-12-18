@@ -17,10 +17,11 @@ namespace Data
         public int Id { get; set; }
         public int UserSetId { get; set; }
         public int AdsId { get; set; }
-        public string Pay { get; set; }
-        public string Method { get; set; }
+        public decimal Amount { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual UserSet UserSet { get; set; }
         public virtual Ads Ads { get; set; }
+        public virtual AdsAccess AdsAccess { get; set; }
     }
 }

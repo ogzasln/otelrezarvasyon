@@ -4,21 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="266cb7e6a9f24096822811766ceb541e" Name="Diagram1" ZoomLevel="94">
+      <Diagram DiagramId="266cb7e6a9f24096822811766ceb541e" Name="Diagram1" ZoomLevel="92" DisplayType="true">
         <EntityTypeShape EntityType="dbModel.UserSet" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbModel.UserTypeSet" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbModel.UserTypeSet" Width="1.5" PointX="0.875" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="dbModel.FK_UserUserType" ManuallyRouted="false" />
         <EntityTypeShape EntityType="dbModel.Category" Width="1.5" PointX="5.125" PointY="0.875" />
         <EntityTypeShape EntityType="dbModel.Post" Width="1.5" PointX="7.375" PointY="0.875" />
         <AssociationConnector Association="dbModel.PostCategory" />
         <AssociationConnector Association="dbModel.UserSetPost" />
-        <EntityTypeShape EntityType="dbModel.Payment" Width="1.5" PointX="0.75" PointY="3.375" />
-        <EntityTypeShape EntityType="dbModel.Ads" Width="1.5" PointX="2.875" PointY="3.75" />
+        <EntityTypeShape EntityType="dbModel.Payment" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbModel.Ads" Width="1.5" PointX="3.125" PointY="4.25" />
         <EntityTypeShape EntityType="dbModel.Evaluation" Width="1.5" PointX="5.125" PointY="3.625" />
         <AssociationConnector Association="dbModel.UserSetPayment" />
         <AssociationConnector Association="dbModel.AdsPayment" />
         <AssociationConnector Association="dbModel.UserSetEvaluation" />
         <AssociationConnector Association="dbModel.AdsEvaluation" />
+        <EntityTypeShape EntityType="dbModel.AdsAccess" Width="1.5" PointX="7.75" PointY="4" />
+        <AssociationConnector Association="dbModel.AdsAdsAccess" />
+        <AssociationConnector Association="dbModel.UserSetAdsAccess" />
+        <AssociationConnector Association="dbModel.PaymentAdsAccess" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

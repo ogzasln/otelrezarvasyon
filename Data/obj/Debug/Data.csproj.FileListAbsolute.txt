@@ -34,3 +34,4 @@ C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\bin\Microsoft.Appl
 C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\obj\Debug\Data.dll
 C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\obj\Debug\Data.pdb
+C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache

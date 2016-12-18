@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/06/2016 20:14:30
+-- Date Created: 12/18/2016 15:04:30
 -- Generated from EDMX file: C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\db.edmx
 -- --------------------------------------------------
 
@@ -26,6 +26,27 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserSetPost]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PostSet] DROP CONSTRAINT [FK_UserSetPost];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UserSetPayment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_UserSetPayment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AdsPayment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_AdsPayment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserSetEvaluation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EvaluationSet] DROP CONSTRAINT [FK_UserSetEvaluation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AdsEvaluation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EvaluationSet] DROP CONSTRAINT [FK_AdsEvaluation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AdsAdsAccess]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[AdsAccessSet] DROP CONSTRAINT [FK_AdsAdsAccess];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserSetAdsAccess]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[AdsAccessSet] DROP CONSTRAINT [FK_UserSetAdsAccess];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PaymentAdsAccess]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_PaymentAdsAccess];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -42,6 +63,18 @@ IF OBJECT_ID(N'[dbo].[CategorySet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[PostSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PostSet];
+GO
+IF OBJECT_ID(N'[dbo].[PaymentSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PaymentSet];
+GO
+IF OBJECT_ID(N'[dbo].[AdsSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AdsSet];
+GO
+IF OBJECT_ID(N'[dbo].[EvaluationSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EvaluationSet];
+GO
+IF OBJECT_ID(N'[dbo].[AdsAccessSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[AdsAccessSet];
 GO
 
 -- --------------------------------------------------
@@ -89,8 +122,9 @@ CREATE TABLE [dbo].[PaymentSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [UserSetId] int  NOT NULL,
     [AdsId] int  NOT NULL,
-    [Pay] nvarchar(max)  NOT NULL,
-    [Method] nvarchar(max)  NOT NULL
+    [Amount] decimal(18,0)  NOT NULL,
+    [Date] datetime  NOT NULL,
+    [AdsAccess_Id] int  NOT NULL
 );
 GO
 
@@ -113,6 +147,14 @@ CREATE TABLE [dbo].[EvaluationSet] (
     [AdsId] int  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Title] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'AdsAccessSet'
+CREATE TABLE [dbo].[AdsAccessSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [AdsId] int  NOT NULL,
+    [UserSetId] int  NOT NULL
 );
 GO
 
@@ -159,6 +201,12 @@ GO
 -- Creating primary key on [Id] in table 'EvaluationSet'
 ALTER TABLE [dbo].[EvaluationSet]
 ADD CONSTRAINT [PK_EvaluationSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'AdsAccessSet'
+ALTER TABLE [dbo].[AdsAccessSet]
+ADD CONSTRAINT [PK_AdsAccessSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -269,6 +317,51 @@ GO
 CREATE INDEX [IX_FK_AdsEvaluation]
 ON [dbo].[EvaluationSet]
     ([AdsId]);
+GO
+
+-- Creating foreign key on [AdsId] in table 'AdsAccessSet'
+ALTER TABLE [dbo].[AdsAccessSet]
+ADD CONSTRAINT [FK_AdsAdsAccess]
+    FOREIGN KEY ([AdsId])
+    REFERENCES [dbo].[AdsSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_AdsAdsAccess'
+CREATE INDEX [IX_FK_AdsAdsAccess]
+ON [dbo].[AdsAccessSet]
+    ([AdsId]);
+GO
+
+-- Creating foreign key on [UserSetId] in table 'AdsAccessSet'
+ALTER TABLE [dbo].[AdsAccessSet]
+ADD CONSTRAINT [FK_UserSetAdsAccess]
+    FOREIGN KEY ([UserSetId])
+    REFERENCES [dbo].[UserSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserSetAdsAccess'
+CREATE INDEX [IX_FK_UserSetAdsAccess]
+ON [dbo].[AdsAccessSet]
+    ([UserSetId]);
+GO
+
+-- Creating foreign key on [AdsAccess_Id] in table 'PaymentSet'
+ALTER TABLE [dbo].[PaymentSet]
+ADD CONSTRAINT [FK_PaymentAdsAccess]
+    FOREIGN KEY ([AdsAccess_Id])
+    REFERENCES [dbo].[AdsAccessSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PaymentAdsAccess'
+CREATE INDEX [IX_FK_PaymentAdsAccess]
+ON [dbo].[PaymentSet]
+    ([AdsAccess_Id]);
 GO
 
 -- --------------------------------------------------
