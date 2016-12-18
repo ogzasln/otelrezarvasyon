@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/18/2016 15:04:30
+-- Date Created: 12/18/2016 18:40:46
 -- Generated from EDMX file: C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Data\db.edmx
 -- --------------------------------------------------
 
@@ -47,6 +47,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PaymentAdsAccess]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_PaymentAdsAccess];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UserSetCart]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CartSet] DROP CONSTRAINT [FK_UserSetCart];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AdsCart]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CartSet] DROP CONSTRAINT [FK_AdsCart];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -67,14 +73,17 @@ GO
 IF OBJECT_ID(N'[dbo].[PaymentSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PaymentSet];
 GO
-IF OBJECT_ID(N'[dbo].[AdsSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AdsSet];
+IF OBJECT_ID(N'[dbo].[Ads]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Ads];
 GO
 IF OBJECT_ID(N'[dbo].[EvaluationSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EvaluationSet];
 GO
 IF OBJECT_ID(N'[dbo].[AdsAccessSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[AdsAccessSet];
+GO
+IF OBJECT_ID(N'[dbo].[CartSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CartSet];
 GO
 
 -- --------------------------------------------------
@@ -128,15 +137,19 @@ CREATE TABLE [dbo].[PaymentSet] (
 );
 GO
 
--- Creating table 'AdsSet'
-CREATE TABLE [dbo].[AdsSet] (
+-- Creating table 'Ads'
+CREATE TABLE [dbo].[Ads] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Title] nvarchar(max)  NOT NULL,
     [Text] nvarchar(max)  NOT NULL,
     [Pay] nvarchar(max)  NOT NULL,
     [Contact] nvarchar(max)  NOT NULL,
-    [Adress] nvarchar(max)  NOT NULL
+    [Adress] nvarchar(max)  NOT NULL,
+    [File] nvarchar(max)  NOT NULL,
+    [Filename] nvarchar(max)  NOT NULL,
+    [ContentText] nvarchar(max)  NOT NULL,
+    [Price] decimal(18,0)  NOT NULL
 );
 GO
 
@@ -155,6 +168,16 @@ CREATE TABLE [dbo].[AdsAccessSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [AdsId] int  NOT NULL,
     [UserSetId] int  NOT NULL
+);
+GO
+
+-- Creating table 'CartSet'
+CREATE TABLE [dbo].[CartSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Status] int  NOT NULL,
+    [Count] int  NOT NULL,
+    [UserSetId] int  NOT NULL,
+    [AdsId] int  NOT NULL
 );
 GO
 
@@ -192,9 +215,9 @@ ADD CONSTRAINT [PK_PaymentSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'AdsSet'
-ALTER TABLE [dbo].[AdsSet]
-ADD CONSTRAINT [PK_AdsSet]
+-- Creating primary key on [Id] in table 'Ads'
+ALTER TABLE [dbo].[Ads]
+ADD CONSTRAINT [PK_Ads]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -207,6 +230,12 @@ GO
 -- Creating primary key on [Id] in table 'AdsAccessSet'
 ALTER TABLE [dbo].[AdsAccessSet]
 ADD CONSTRAINT [PK_AdsAccessSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'CartSet'
+ALTER TABLE [dbo].[CartSet]
+ADD CONSTRAINT [PK_CartSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -278,7 +307,7 @@ GO
 ALTER TABLE [dbo].[PaymentSet]
 ADD CONSTRAINT [FK_AdsPayment]
     FOREIGN KEY ([AdsId])
-    REFERENCES [dbo].[AdsSet]
+    REFERENCES [dbo].[Ads]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -308,7 +337,7 @@ GO
 ALTER TABLE [dbo].[EvaluationSet]
 ADD CONSTRAINT [FK_AdsEvaluation]
     FOREIGN KEY ([AdsId])
-    REFERENCES [dbo].[AdsSet]
+    REFERENCES [dbo].[Ads]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -323,7 +352,7 @@ GO
 ALTER TABLE [dbo].[AdsAccessSet]
 ADD CONSTRAINT [FK_AdsAdsAccess]
     FOREIGN KEY ([AdsId])
-    REFERENCES [dbo].[AdsSet]
+    REFERENCES [dbo].[Ads]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
@@ -362,6 +391,36 @@ GO
 CREATE INDEX [IX_FK_PaymentAdsAccess]
 ON [dbo].[PaymentSet]
     ([AdsAccess_Id]);
+GO
+
+-- Creating foreign key on [UserSetId] in table 'CartSet'
+ALTER TABLE [dbo].[CartSet]
+ADD CONSTRAINT [FK_UserSetCart]
+    FOREIGN KEY ([UserSetId])
+    REFERENCES [dbo].[UserSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserSetCart'
+CREATE INDEX [IX_FK_UserSetCart]
+ON [dbo].[CartSet]
+    ([UserSetId]);
+GO
+
+-- Creating foreign key on [AdsId] in table 'CartSet'
+ALTER TABLE [dbo].[CartSet]
+ADD CONSTRAINT [FK_AdsCart]
+    FOREIGN KEY ([AdsId])
+    REFERENCES [dbo].[Ads]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_AdsCart'
+CREATE INDEX [IX_FK_AdsCart]
+ON [dbo].[CartSet]
+    ([AdsId]);
 GO
 
 -- --------------------------------------------------

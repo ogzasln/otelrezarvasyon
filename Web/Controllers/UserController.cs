@@ -26,7 +26,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserSet found = db.UserSet.FirstOrDefault(r => r.Mail == user.Email && r.Password == user.Password);
+                UserSet found = db.UserSet.FirstOrDefault(r => r.Mail == user.Mail && r.Password == user.Password);
                 if (found != null)
                 {
                     Session["user"] = found;
@@ -51,15 +51,15 @@ namespace Web.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        public ActionResult Avatar(int id)
-        {
-            byte[] file = db.UserSet.Find(id).Avatar;
-            if (file == null)
-            {
-                return Content("Resim bulunamadı");
-            }
-            return File(file, ImageHelper.GetContentType(file).ToString());
-        }
+        //public ActionResult Avatar(int id)
+        //{
+        //    byte[] file = db.UserSet.Find(id).Avatar;
+        //    if (file == null)
+        //    {
+        //        return Content("Resim bulunamadı");
+        //    }
+        //    return File(file, ImageHelper.GetContentType(file).ToString());
+        //}
 
     }
 }

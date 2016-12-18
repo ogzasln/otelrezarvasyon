@@ -25,7 +25,7 @@ namespace Web.Controllers
             var carts = getCarts();
             if (carts.Count() > 0)
             {
-                ViewBag.Amount = carts.Sum(q => q.Project.Price);
+                ViewBag.Amount = carts.Sum(q => q.Ads.Price);
                 return View();
             }
 
@@ -43,10 +43,10 @@ namespace Web.Controllers
                 {
                     AdsAccess access = new AdsAccess();
                     access.UserSetId = UserHelper.Current().Id;
-                    access.AdsId = cart.;
+                    access.AdsId = cart.AdsId;
 
                     Payment payment = new Payment();
-                    payment.Amount = cart.Project.Price;
+                    payment.Amount = cart.Ads.Price;
                     payment.Date = DateTime.Now;
                     payment.UserSetId = UserHelper.Current().Id;
                     payment.AdsAccess = access;
@@ -60,7 +60,7 @@ namespace Web.Controllers
                 return RedirectToAction("Success");
             }
 
-            ViewBag.Amount = carts.Sum(q => q.Project.Price);
+            ViewBag.Amount = carts.Sum(q => q.Ads.Price);
             return View("PayForm");
         }
 
@@ -72,7 +72,7 @@ namespace Web.Controllers
         private IQueryable<Cart> getCarts()
         {
             int userId = UserHelper.Current().Id;
-            return db.CartSet.Where(q => q.UserId == userId && q.Status == Data.CartStatus.New);
+            return db.CartSet.Where(q => q.UserSetId == userId && q.Status == Data.CartStatus.New);
         }
     }
 }

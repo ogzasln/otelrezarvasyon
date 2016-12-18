@@ -13,6 +13,8 @@
     <NavigationProperty Name="Post" Relationship="dbModel.UserSetPost" FromRole="UserSet" ToRole="Post" />
     <NavigationProperty Name="Payment" Relationship="dbModel.UserSetPayment" FromRole="UserSet" ToRole="Payment" />
     <NavigationProperty Name="Evaluation" Relationship="dbModel.UserSetEvaluation" FromRole="UserSet" ToRole="Evaluation" />
+    <NavigationProperty Name="AdsAccess" Relationship="dbModel.UserSetAdsAccess" FromRole="UserSet" ToRole="AdsAccess" />
+    <NavigationProperty Name="Cart" Relationship="dbModel.UserSetCart" FromRole="UserSet" ToRole="Cart" />
   </EntityType>
   <EntityType Name="UserTypeSet">
     <Key>
@@ -52,14 +54,14 @@
       <End Role="Post" EntitySet="PostSet" />
     </AssociationSet>
     <EntitySet Name="PaymentSet" EntityType="dbModel.Payment" />
-    <EntitySet Name="AdsSet" EntityType="dbModel.Ads" />
+    <EntitySet Name="Ads" EntityType="dbModel.Ads" />
     <EntitySet Name="EvaluationSet" EntityType="dbModel.Evaluation" />
     <AssociationSet Name="UserSetPayment" Association="dbModel.UserSetPayment">
       <End Role="UserSet" EntitySet="UserSet" />
       <End Role="Payment" EntitySet="PaymentSet" />
     </AssociationSet>
     <AssociationSet Name="AdsPayment" Association="dbModel.AdsPayment">
-      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Ads" EntitySet="Ads" />
       <End Role="Payment" EntitySet="PaymentSet" />
     </AssociationSet>
     <AssociationSet Name="UserSetEvaluation" Association="dbModel.UserSetEvaluation">
@@ -67,8 +69,30 @@
       <End Role="Evaluation" EntitySet="EvaluationSet" />
     </AssociationSet>
     <AssociationSet Name="AdsEvaluation" Association="dbModel.AdsEvaluation">
-      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Ads" EntitySet="Ads" />
       <End Role="Evaluation" EntitySet="EvaluationSet" />
+    </AssociationSet>
+    <EntitySet Name="AdsAccessSet" EntityType="dbModel.AdsAccess" />
+    <AssociationSet Name="AdsAdsAccess" Association="dbModel.AdsAdsAccess">
+      <End Role="Ads" EntitySet="Ads" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetAdsAccess" Association="dbModel.UserSetAdsAccess">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="PaymentAdsAccess" Association="dbModel.PaymentAdsAccess">
+      <End Role="Payment" EntitySet="PaymentSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <EntitySet Name="CartSet" EntityType="dbModel.Cart" />
+    <AssociationSet Name="UserSetCart" Association="dbModel.UserSetCart">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Cart" EntitySet="CartSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsCart" Association="dbModel.AdsCart">
+      <End Role="Ads" EntitySet="Ads" />
+      <End Role="Cart" EntitySet="CartSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Category">
@@ -123,25 +147,32 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserSetId" Type="Int32" Nullable="false" />
-    <Property Name="AdsId" Type="Int32" Nullable="false" />
-    <Property Name="Pay" Type="String" Nullable="false" />
-    <Property Name="Method" Type="String" Nullable="false" />
+    <Property Name="AdsId" Nullable="false" Type="Int32" />
     <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetPayment" FromRole="Payment" ToRole="UserSet" />
     <NavigationProperty Name="Ads" Relationship="dbModel.AdsPayment" FromRole="Payment" ToRole="Ads" />
+    <NavigationProperty Name="AdsAccess" Relationship="dbModel.PaymentAdsAccess" FromRole="Payment" ToRole="AdsAccess" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" />
   </EntityType>
   <EntityType Name="Ads">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" />
+    <Property Name="Name" Nullable="false" Type="String" />
     <Property Name="Title" Type="String" Nullable="false" />
     <Property Name="Text" Type="String" Nullable="false" />
-    <Property Name="Pay" Type="String" Nullable="false" />
+    <Property Name="Pay" Nullable="false" Type="String" />
     <Property Name="Contact" Type="String" Nullable="false" />
     <Property Name="Adress" Type="String" Nullable="false" />
     <NavigationProperty Name="Payment" Relationship="dbModel.AdsPayment" FromRole="Ads" ToRole="Payment" />
     <NavigationProperty Name="Evaluation" Relationship="dbModel.AdsEvaluation" FromRole="Ads" ToRole="Evaluation" />
+    <NavigationProperty Name="AdsAccess" Relationship="dbModel.AdsAdsAccess" FromRole="Ads" ToRole="AdsAccess" />
+    <NavigationProperty Name="Cart" Relationship="dbModel.AdsCart" FromRole="Ads" ToRole="Cart" />
+    <Property Name="File" Nullable="false" Type="String" />
+    <Property Name="Filename" Nullable="false" Type="String" />
+    <Property Name="ContentText" Type="String" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="Evaluation">
     <Key>
@@ -149,7 +180,7 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserSetId" Type="Int32" Nullable="false" />
-    <Property Name="AdsId" Type="Int32" Nullable="false" />
+    <Property Name="AdsId" Nullable="false" Type="Int32" />
     <Property Name="Name" Type="String" Nullable="false" />
     <Property Name="Title" Type="String" Nullable="false" />
     <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetEvaluation" FromRole="Evaluation" ToRole="UserSet" />
@@ -203,4 +234,84 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="AdsAccess">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Ads" Relationship="dbModel.AdsAdsAccess" FromRole="AdsAccess" ToRole="Ads" />
+    <Property Name="AdsId" Nullable="false" Type="Int32" />
+    <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetAdsAccess" FromRole="AdsAccess" ToRole="UserSet" />
+    <Property Name="UserSetId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Payment" Relationship="dbModel.PaymentAdsAccess" FromRole="AdsAccess" ToRole="Payment" />
+  </EntityType>
+  <Association Name="AdsAdsAccess">
+    <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+    <End Type="dbModel.AdsAccess" Role="AdsAccess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdsAccess">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetAdsAccess">
+    <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+    <End Type="dbModel.AdsAccess" Role="AdsAccess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdsAccess">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PaymentAdsAccess">
+    <End Type="dbModel.Payment" Role="Payment" Multiplicity="0..1" />
+    <End Type="dbModel.AdsAccess" Role="AdsAccess" Multiplicity="1" />
+  </Association>
+  <EntityType Name="Cart">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="dbModel.CartStatus" Nullable="false" />
+    <Property Name="Count" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserSet" Relationship="dbModel.UserSetCart" FromRole="Cart" ToRole="UserSet" />
+    <Property Name="UserSetId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Ads" Relationship="dbModel.AdsCart" FromRole="Cart" ToRole="Ads" />
+    <Property Name="AdsId" Nullable="false" Type="Int32" />
+  </EntityType>
+  <Association Name="UserSetCart">
+    <End Type="dbModel.UserSet" Role="UserSet" Multiplicity="1" />
+    <End Type="dbModel.Cart" Role="Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsCart">
+    <End Type="dbModel.Ads" Role="Ads" Multiplicity="1" />
+    <End Type="dbModel.Cart" Role="Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EnumType Name="CartStatus">
+    <Member Name="New" />
+    <Member Name="Paid" />
+    <Member Name="Cancelled" />
+  </EnumType>
 </Schema>

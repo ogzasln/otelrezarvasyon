@@ -16,8 +16,8 @@ namespace Web.Controllers
         // GET: Credit
         public ActionResult Index(int Id)
         {
-            var project = db.ProjectSet.FirstOrDefault(q => q.Id == Id);
-            ViewBag.project = project;
+            var ads = db.Ads.FirstOrDefault(q => q.Id == Id);
+            ViewBag.ads = ads;
 
             return View();
         }
@@ -25,16 +25,16 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Pay(int Id, CreditViewModel credit)
         {
-            Ads project = db.ProjectSet.FirstOrDefault(q => q.Id == Id);
+            Ads ads = db.Ads.FirstOrDefault(q => q.Id == Id);
 
             if (ModelState.IsValid)
             {
-                Ads access = new AdsAccess();
-                access.UserId = UserHelper.Current().Id;
-                access.ProjectId = project.Id;
+                AdsAccess access = new AdsAccess();
+                access.UserSetId = UserHelper.Current().Id;
+                access.AdsId = ads.Id;
 
                 Payment payment = new Payment();
-                payment.Amount = Ads.Price;
+                payment.Amount = ads.Price;
                 payment.Date = DateTime.Now;
                 payment.UserSetId = UserHelper.Current().Id;
                 payment.AdsAccess = access;
@@ -45,7 +45,7 @@ namespace Web.Controllers
                 return RedirectToAction("Success");
             }
 
-            ViewBag.project = project;
+            ViewBag.ads = ads;
 
             return View("Index");
         }
@@ -58,7 +58,7 @@ namespace Web.Controllers
         public ActionResult List()
         {
             var UserId = UserHelper.Current().Id;
-            var payments = db.PaymentSet.Where(q => q.UserId == UserId).AsEnumerable();
+            var payments = db.PaymentSet.Where(q => q.UserSetId == UserId).AsEnumerable();
             return View(payments);
         }
     }

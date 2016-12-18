@@ -47,14 +47,14 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
           <ScalarProperty Name="AdsId" ColumnName="AdsId" />
-          <ScalarProperty Name="Pay" ColumnName="Pay" />
-          <ScalarProperty Name="Method" ColumnName="Method" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="AdsSet">
+    <EntitySetMapping Name="Ads">
       <EntityTypeMapping TypeName="IsTypeOf(dbModel.Ads)">
-        <MappingFragment StoreEntitySet="AdsSet">
+        <MappingFragment StoreEntitySet="Ads">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Title" ColumnName="Title" />
@@ -62,6 +62,10 @@
           <ScalarProperty Name="Pay" ColumnName="Pay" />
           <ScalarProperty Name="Contact" ColumnName="Contact" />
           <ScalarProperty Name="Adress" ColumnName="Adress" />
+          <ScalarProperty Name="File" ColumnName="File" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="ContentText" ColumnName="ContentText" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -76,5 +80,33 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="AdsAccessSet">
+      <EntityTypeMapping TypeName="IsTypeOf(dbModel.AdsAccess)">
+        <MappingFragment StoreEntitySet="AdsAccessSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AdsId" ColumnName="AdsId" />
+          <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CartSet">
+      <EntityTypeMapping TypeName="IsTypeOf(dbModel.Cart)">
+        <MappingFragment StoreEntitySet="CartSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="UserSetId" ColumnName="UserSetId" />
+          <ScalarProperty Name="AdsId" ColumnName="AdsId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PaymentAdsAccess" TypeName="dbModel.PaymentAdsAccess" StoreEntitySet="PaymentSet">
+      <EndProperty Name="AdsAccess">
+        <ScalarProperty Name="Id" ColumnName="AdsAccess_Id" />
+      </EndProperty>
+      <EndProperty Name="Payment">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

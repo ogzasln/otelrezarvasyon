@@ -10,7 +10,7 @@ namespace Web.ViewModel
     {
         [Display(Name = "E-Posta")]
         [Required(ErrorMessage = "E-Posta adresi gereklidir")]
-        public String Email { get; set; }
+        public String Mail { get; set; }
 
         [Display(Name = "Parola")]
         [Required(ErrorMessage = "Parola gereklidir")]

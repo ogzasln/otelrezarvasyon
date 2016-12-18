@@ -6,8 +6,10 @@
     <EntitySet Name="CategorySet" EntityType="dbModel.Store.CategorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PostSet" EntityType="dbModel.Store.PostSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PaymentSet" EntityType="dbModel.Store.PaymentSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="AdsSet" EntityType="dbModel.Store.AdsSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Ads" EntityType="dbModel.Store.Ads" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="EvaluationSet" EntityType="dbModel.Store.EvaluationSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AdsAccessSet" EntityType="dbModel.Store.AdsAccessSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CartSet" EntityType="dbModel.Store.CartSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_UserUserType" Association="dbModel.Store.FK_UserUserType">
       <End Role="UserTypeSet" EntitySet="UserTypeSet" />
       <End Role="UserSet" EntitySet="UserSet" />
@@ -25,7 +27,7 @@
       <End Role="Payment" EntitySet="PaymentSet" />
     </AssociationSet>
     <AssociationSet Name="AdsPayment" Association="dbModel.Store.AdsPayment">
-      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Ads" EntitySet="Ads" />
       <End Role="Payment" EntitySet="PaymentSet" />
     </AssociationSet>
     <AssociationSet Name="UserSetEvaluation" Association="dbModel.Store.UserSetEvaluation">
@@ -33,8 +35,28 @@
       <End Role="Evaluation" EntitySet="EvaluationSet" />
     </AssociationSet>
     <AssociationSet Name="AdsEvaluation" Association="dbModel.Store.AdsEvaluation">
-      <End Role="Ads" EntitySet="AdsSet" />
+      <End Role="Ads" EntitySet="Ads" />
       <End Role="Evaluation" EntitySet="EvaluationSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsAdsAccess" Association="dbModel.Store.AdsAdsAccess">
+      <End Role="Ads" EntitySet="Ads" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetAdsAccess" Association="dbModel.Store.UserSetAdsAccess">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="PaymentAdsAccess" Association="dbModel.Store.PaymentAdsAccess">
+      <End Role="Payment" EntitySet="PaymentSet" />
+      <End Role="AdsAccess" EntitySet="AdsAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserSetCart" Association="dbModel.Store.UserSetCart">
+      <End Role="UserSet" EntitySet="UserSet" />
+      <End Role="Cart" EntitySet="CartSet" />
+    </AssociationSet>
+    <AssociationSet Name="AdsCart" Association="dbModel.Store.AdsCart">
+      <End Role="Ads" EntitySet="Ads" />
+      <End Role="Cart" EntitySet="CartSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -80,10 +102,11 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserSetId" Type="int" Nullable="false" />
     <Property Name="AdsId" Type="int" Nullable="false" />
-    <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Method" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="AdsAccess_Id" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="AdsSet">
+  <EntityType Name="Ads">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
@@ -94,6 +117,10 @@
     <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Adress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="File" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Filename" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ContentText" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="EvaluationSet">
     <Key>
@@ -104,6 +131,24 @@
     <Property Name="AdsId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AdsAccessSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CartSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="UserSetId" Type="int" Nullable="false" />
+    <Property Name="AdsId" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_UserUserType">
     <End Role="UserTypeSet" Type="dbModel.Store.UserTypeSet" Multiplicity="1" />
@@ -154,7 +199,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="AdsPayment">
-    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="Ads" Type="dbModel.Store.Ads" Multiplicity="1" />
     <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Ads">
@@ -178,13 +223,73 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="AdsEvaluation">
-    <End Role="Ads" Type="dbModel.Store.AdsSet" Multiplicity="1" />
+    <End Role="Ads" Type="dbModel.Store.Ads" Multiplicity="1" />
     <End Role="Evaluation" Type="dbModel.Store.EvaluationSet" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Ads">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Evaluation">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsAdsAccess">
+    <End Role="Ads" Type="dbModel.Store.Ads" Multiplicity="1" />
+    <End Role="AdsAccess" Type="dbModel.Store.AdsAccessSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdsAccess">
+        <PropertyRef Name="AdsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetAdsAccess">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="AdsAccess" Type="dbModel.Store.AdsAccessSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdsAccess">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PaymentAdsAccess">
+    <End Role="Payment" Type="dbModel.Store.PaymentSet" Multiplicity="*" />
+    <End Role="AdsAccess" Type="dbModel.Store.AdsAccessSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="AdsAccess">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="AdsAccess_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserSetCart">
+    <End Role="UserSet" Type="dbModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Cart" Type="dbModel.Store.CartSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="UserSetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AdsCart">
+    <End Role="Ads" Type="dbModel.Store.Ads" Multiplicity="1" />
+    <End Role="Cart" Type="dbModel.Store.CartSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ads">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
         <PropertyRef Name="AdsId" />
       </Dependent>
     </ReferentialConstraint>

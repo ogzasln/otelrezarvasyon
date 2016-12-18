@@ -30,8 +30,9 @@ namespace Data
         public virtual DbSet<Category> CategorySet { get; set; }
         public virtual DbSet<Post> PostSet { get; set; }
         public virtual DbSet<Payment> PaymentSet { get; set; }
-        public virtual DbSet<Ads> AdsSet { get; set; }
+        public virtual DbSet<Ads> Ads { get; set; }
         public virtual DbSet<Evaluation> EvaluationSet { get; set; }
         public virtual DbSet<AdsAccess> AdsAccessSet { get; set; }
+        public virtual DbSet<Cart> CartSet { get; set; }
     }
 }
