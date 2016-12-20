@@ -15,7 +15,7 @@ namespace Admin.Filters
             if (httpContext.Session["user"] != null)
             {
                 Data.UserSet user = (Data.UserSet)httpContext.Session["user"];
-                if (user.UserTypeSet.Title == "Admin") ;
+                if (user.UserTypeSet.Title == "Admin")
                 {
                     return true;
                 }

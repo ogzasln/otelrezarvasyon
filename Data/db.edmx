@@ -122,9 +122,6 @@
     <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Adress" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="File" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Filename" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ContentText" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Price" Type="decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="EvaluationSet">
@@ -472,9 +469,6 @@
           <NavigationProperty Name="Evaluation" Relationship="dbModel.AdsEvaluation" FromRole="Ads" ToRole="Evaluation" />
           <NavigationProperty Name="AdsAccess" Relationship="dbModel.AdsAdsAccess" FromRole="Ads" ToRole="AdsAccess" />
           <NavigationProperty Name="Cart" Relationship="dbModel.AdsCart" FromRole="Ads" ToRole="Cart" />
-          <Property Name="File" Nullable="false" Type="String" />
-          <Property Name="Filename" Nullable="false" Type="String" />
-          <Property Name="ContentText" Type="String" Nullable="false" />
           <Property Name="Price" Type="Decimal" Nullable="false" />
         </EntityType>
         <EntityType Name="Evaluation">
@@ -684,9 +678,6 @@
           <ScalarProperty Name="Pay" ColumnName="Pay" />
           <ScalarProperty Name="Contact" ColumnName="Contact" />
           <ScalarProperty Name="Adress" ColumnName="Adress" />
-          <ScalarProperty Name="File" ColumnName="File" />
-          <ScalarProperty Name="Filename" ColumnName="Filename" />
-          <ScalarProperty Name="ContentText" ColumnName="ContentText" />
           <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>

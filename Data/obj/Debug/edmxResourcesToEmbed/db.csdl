@@ -169,9 +169,6 @@
     <NavigationProperty Name="Evaluation" Relationship="dbModel.AdsEvaluation" FromRole="Ads" ToRole="Evaluation" />
     <NavigationProperty Name="AdsAccess" Relationship="dbModel.AdsAdsAccess" FromRole="Ads" ToRole="AdsAccess" />
     <NavigationProperty Name="Cart" Relationship="dbModel.AdsCart" FromRole="Ads" ToRole="Cart" />
-    <Property Name="File" Nullable="false" Type="String" />
-    <Property Name="Filename" Nullable="false" Type="String" />
-    <Property Name="ContentText" Type="String" Nullable="false" />
     <Property Name="Price" Type="Decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="Evaluation">

@@ -41,7 +41,7 @@ namespace Admin.Controllers
         public ActionResult Create()
         {
             ViewBag.UserSetId = new SelectList(db.UserSet, "Id", "Name");
-            ViewBag.AdsId = new SelectList(db.AdsSet, "Id", "Name");
+            ViewBag.AdsId = new SelectList(db.Ads, "Id", "Name");
             return View();
         }
 
@@ -60,7 +60,7 @@ namespace Admin.Controllers
             }
 
             ViewBag.UserSetId = new SelectList(db.UserSet, "Id", "Name", payment.UserSetId);
-            ViewBag.AdsId = new SelectList(db.AdsSet, "Id", "Name", payment.AdsId);
+            ViewBag.AdsId = new SelectList(db.Ads, "Id", "Name", payment.AdsId);
             return View(payment);
         }
 
@@ -77,7 +77,7 @@ namespace Admin.Controllers
                 return HttpNotFound();
             }
             ViewBag.UserSetId = new SelectList(db.UserSet, "Id", "Name", payment.UserSetId);
-            ViewBag.AdsId = new SelectList(db.AdsSet, "Id", "Name", payment.AdsId);
+            ViewBag.AdsId = new SelectList(db.Ads, "Id", "Name", payment.AdsId);
             return View(payment);
         }
 
@@ -95,7 +95,7 @@ namespace Admin.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.UserSetId = new SelectList(db.UserSet, "Id", "Name", payment.UserSetId);
-            ViewBag.AdsId = new SelectList(db.AdsSet, "Id", "Name", payment.AdsId);
+            ViewBag.AdsId = new SelectList(db.Ads, "Id", "Name", payment.AdsId);
             return View(payment);
         }
 

@@ -62,9 +62,6 @@
           <ScalarProperty Name="Pay" ColumnName="Pay" />
           <ScalarProperty Name="Contact" ColumnName="Contact" />
           <ScalarProperty Name="Adress" ColumnName="Adress" />
-          <ScalarProperty Name="File" ColumnName="File" />
-          <ScalarProperty Name="Filename" ColumnName="Filename" />
-          <ScalarProperty Name="ContentText" ColumnName="ContentText" />
           <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -31,45 +31,45 @@ namespace Web.Controllers
         //    return File(project.File, project.ContentType);
         //}
 
-        //[HttpPost]
-        //public ActionResult AddToCart(int id)
-        //{
-        //    if (UserHelper.isMember() == true)
-        //    {
+        [HttpPost]
+        public ActionResult AddToCart(int id)
+        {
+            if (UserHelper.isMember() == true)
+            {
 
-        //        Cart cart = new Cart();
-        //        cart.AdsId = id;
-        //        cart.UserSetId = UserHelper.Current().Id;
-        //        cart.Status = CartStatus.New;
-        //        cart.Count = 1;
+                Cart cart = new Cart();
+                cart.AdsId = id;
+                cart.UserSetId = UserHelper.Current().Id;
+                cart.Status = CartStatus.New;
+                cart.Count = 1;
 
-        //        db.CartSet.Add(cart);
+                db.CartSet.Add(cart);
 
-        //        db.SaveChanges();
+                db.SaveChanges();
 
-        //        return Json(id);
-        //    }
+                return Json(id);
+            }
 
-        //    return Json("login");
-        //}
+            return Json("login");
+        }
 
-        //[HttpPost]
-        //public ActionResult RemoveFromCart(int id)
-        //{
-        //    if (UserHelper.isMember() == true)
-        //    {
-        //        int userId = UserHelper.Current().Id;
-        //        var cart = db.CartSet.FirstOrDefault(q => q.Status == CartStatus.New &&
-        //                                                  q.UserId == userId &&
-        //                                                  q.ProjectId == id
-        //                                            );
-        //        db.CartSet.Remove(cart);
-        //        db.SaveChanges();
+        [HttpPost]
+        public ActionResult RemoveFromCart(int id)
+        {
+            if (UserHelper.isMember() == true)
+            {
+                int userId = UserHelper.Current().Id;
+                var cart = db.CartSet.FirstOrDefault(q => q.Status == CartStatus.New &&
+                                                          q.UserSetId == userId &&
+                                                          q.AdsId == id
+                                                    );
+                db.CartSet.Remove(cart);
+                db.SaveChanges();
 
-        //        return Json(id);
-        //    }
+                return Json(id);
+            }
 
-        //    return Json("login");
-        //}
+            return Json("login");
+        }
     }
 }

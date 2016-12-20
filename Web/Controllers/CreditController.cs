@@ -25,16 +25,16 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Pay(int Id, CreditViewModel credit)
         {
-            Ads ads = db.Ads.FirstOrDefault(q => q.Id == Id);
+            Ads Ads = db.Ads.FirstOrDefault(q => q.Id == Id);
 
             if (ModelState.IsValid)
             {
                 AdsAccess access = new AdsAccess();
                 access.UserSetId = UserHelper.Current().Id;
-                access.AdsId = ads.Id;
+                access.AdsId = Ads.Id;
 
                 Payment payment = new Payment();
-                payment.Amount = ads.Price;
+                payment.Amount = Ads.Price;
                 payment.Date = DateTime.Now;
                 payment.UserSetId = UserHelper.Current().Id;
                 payment.AdsAccess = access;
@@ -45,7 +45,7 @@ namespace Web.Controllers
                 return RedirectToAction("Success");
             }
 
-            ViewBag.ads = ads;
+            ViewBag.Ads = Ads;
 
             return View("Index");
         }

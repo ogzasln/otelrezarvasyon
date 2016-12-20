@@ -17,7 +17,7 @@ namespace Admin.Controllers
         // GET: Ads
         public ActionResult Index()
         {
-            return View(db.AdsSet.ToList());
+            return View(db.Ads.ToList());
         }
 
         // GET: Ads/Details/5
@@ -27,7 +27,7 @@ namespace Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ads ads = db.AdsSet.Find(id);
+            Ads ads = db.Ads.Find(id);
             if (ads == null)
             {
                 return HttpNotFound();
@@ -50,7 +50,7 @@ namespace Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.AdsSet.Add(ads);
+                db.Ads.Add(ads);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ads ads = db.AdsSet.Find(id);
+            Ads ads = db.Ads.Find(id);
             if (ads == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ads ads = db.AdsSet.Find(id);
+            Ads ads = db.Ads.Find(id);
             if (ads == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Ads ads = db.AdsSet.Find(id);
-            db.AdsSet.Remove(ads);
+            Ads ads = db.Ads.Find(id);
+            db.Ads.Remove(ads);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

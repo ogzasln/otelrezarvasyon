@@ -46,3 +46,7 @@ C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Web\bin\System.Web.Help
 C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Web\bin\System.Web.Mvc.xml
 C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Web\obj\Debug\Web.dll
 C:\Users\Oguz\documents\visual studio 2015\Projects\otel\Web\obj\Debug\Web.pdb
+C:\Users\Oguz\Documents\Visual Studio 2015\Projects\otel\Web\bin\EntityFramework.dll
+C:\Users\Oguz\Documents\Visual Studio 2015\Projects\otel\Web\bin\EntityFramework.SqlServer.dll
+C:\Users\Oguz\Documents\Visual Studio 2015\Projects\otel\Web\bin\EntityFramework.xml
+C:\Users\Oguz\Documents\Visual Studio 2015\Projects\otel\Web\bin\EntityFramework.SqlServer.xml

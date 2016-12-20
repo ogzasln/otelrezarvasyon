@@ -117,9 +117,6 @@
     <Property Name="Pay" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Contact" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Adress" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="File" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Filename" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ContentText" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Price" Type="decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="EvaluationSet">

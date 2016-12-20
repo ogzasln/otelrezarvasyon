@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oğuzhan ASLAN</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    @RenderSection("css", false)
+</head>
+<body>
+    <div class="navbar panel panel-danger">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Oğuzhan ASLAN", "Index", "Ads", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Web.Helpers.UserHelper.isMember() == true)
+                    {
+                        <li>
+                            @Html.ActionLink("Çıkış", "Logout", "User")
+                        </li>   
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+   
+    <div class="container body-content">
+       <div class="row">
+           <div class="col-md-9">
+               @RenderBody()
+           </div>
+           <div class="col-md-3">
+               @Html.Partial("Sidebar")
+           </div>
+       </div>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year - Oğuzhan ASLAN</p>
+        </div>
+    </footer>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("js", false)
+</body>
+</html>

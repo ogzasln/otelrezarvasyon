@@ -1,0 +1,85 @@
+﻿@model IQueryable<Data.Ads>
+@{
+    ViewBag.Title = "Index";
+}
+@if (Web.Helpers.UserHelper.isMember() == true)
+{
+    <div class="row alert alert-info">
+        <h3 class="col-sm-9" style="margin: 10px 0;">
+            Hemen Al ! Kampanyadan yararlan !
+        </h3>
+        <div class="col-sm-3">
+            @Html.ActionLink("Sepetime git", "Index", "Cart", null, new { @class = "btn btn-success btn-lg" })
+        </div>
+    </div>
+
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Açıklama</th>
+            <th>Şehir</th>
+            <th>Fiyatı</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    @foreach (var Ads in Model)
+    {
+        <tr>
+            <td>@Ads.Title</td>
+            <td>@Ads.Text</td>
+            <td>@Ads.Adress</td>
+            <td>@Ads.Price TL</td>
+            @{
+                string statusAdd = String.Empty;
+                string statusRemove = "hide";
+
+                if (Web.Helpers.UserHelper.isMember() == true)
+                {
+                    if (Ads.Cart.FirstOrDefault(q =>
+                            q.Status == Data.CartStatus.New &&
+                            q.UserSetId == Web.Helpers.UserHelper.Current().Id &&
+                            q.AdsId == Ads.Id) != null
+                        )
+                    {
+                        statusAdd = "hide";
+                        statusRemove = String.Empty;
+                    }
+                    else if (Ads.AdsAccess.FirstOrDefault(q => q.UserSetId == Web.Helpers.UserHelper.Current().Id) != null)
+                    {
+                        statusAdd = "hide";
+                        statusRemove = "hide";
+                        <td></td>
+                    }
+                }
+
+                <td id="tdAdd@(Ads.Id)" class="@statusAdd">
+                    @Ajax.ActionLink("Sepete Ekle", "AddToCart", new { @id = Ads.Id },
+                        new AjaxOptions { HttpMethod = "POST", OnSuccess = "ToggleCartButtons" })
+                </td>
+
+                <td id="tdRemove@(Ads.Id)" class="@statusRemove">
+                    @Ajax.ActionLink("Çıkar", "RemoveFromCart", new { @id = Ads.Id },
+                  new AjaxOptions { HttpMethod = "POST", OnSuccess = "ToggleCartButtons" })
+                </td>
+
+            }
+        </tr>
+                }
+</table>
+@section js{
+    <script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        function ToggleCartButtons(result) {
+            if (result == "login") {
+                alert("Sepete eklemek için giriş yapınız");
+            } else {
+                $("#tdAdd" + result).toggleClass("hide");
+                $("#tdRemove" + result).toggleClass("hide");
+            }
+        }
+    </script>
+}
+
+

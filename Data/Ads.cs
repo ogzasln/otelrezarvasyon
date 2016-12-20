@@ -30,9 +30,6 @@ namespace Data
         public string Pay { get; set; }
         public string Contact { get; set; }
         public string Adress { get; set; }
-        public string File { get; set; }
-        public string Filename { get; set; }
-        public string ContentText { get; set; }
         public decimal Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
